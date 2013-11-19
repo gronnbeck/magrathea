@@ -3,7 +3,7 @@ var cli = require('./client')
 
 var default_config = {};
 
-exports.start = function(_config) {
+exports.start = function(config) {
 
 	start(_.defaults(config, default_config));
 

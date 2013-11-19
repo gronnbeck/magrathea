@@ -1,4 +1,5 @@
-var irc = require('irc')
+var proxy = require('./irc-proxy-client')
+, irc = require('irc')
 , _ = require('underscore')
 , auth = require('./auth');
 
@@ -8,9 +9,7 @@ var _runningClients = {};
 var getRunningClients = function(id) {
 	if (!_.has(_runningClients)) {
 		_runningClients['test'] = [
-		new irc.Client('irc.freenode.net', 'pekka---', {
-			channels: ['#pekkabot']
-		})
+			proxy.createProxy({server: 'irc.freenode.net', nick: 'pekka---', channels: ['#pekkabot'] }).connect()
 		];
 	}
 	return _runningClients[id];
@@ -28,6 +27,7 @@ exports.proxyWebClient = function(id, secret, ws_client) {
 	var innerToken = getInnerToken( id );
 	var clients = getRunningClients( innerToken );
 	bindClients2WS(clients, ws_client);
+
 };
 
 var bindClients2WS = function(clients, ws) {
