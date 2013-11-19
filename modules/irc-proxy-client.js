@@ -1,27 +1,26 @@
 var irc = require('irc');
 
-function IRCProxy (connConf) {
+exports.proxy = function(connConf) {
 
 	var _client;
-
-
-	var connect = function() {
+	var connect = function() {	
 		_client = new irc.Client(
 			connConf.server, 
 			connConf.nick, 
 			{
 				channels: connConf.channels
 			}
-		);
-		return _client;
+			);
+		return this;
 	};
 
-	var send = function(to, message) {
+	var send = function(message) {
+		_client.send(JSON.stringify(message));
 	};
 
-	var listen = function() {
-		_client.addListener('message', function (from, to, message) {
-			console.log('[LEAN MEAN AND IMPROVED] ' + from + ' => ' + to + ': ' + message);
+	var listen = function(message) {
+		_client.addListener('message', function (from, to, msg) {
+			message({from: from, to: to, message: msg})
 		});
 	};
 
@@ -33,17 +32,7 @@ function IRCProxy (connConf) {
 
 };
 
-exports.getConnection = function(id) {
 
-};
-
-exports.connectionExists = function(id) {
-
-};
-
-exports.createProxy = function(connConf) {
-	return IRCProxy(connConf);
-};
 
 
 

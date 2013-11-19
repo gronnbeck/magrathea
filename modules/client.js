@@ -1,9 +1,11 @@
-var proxy = require('./irc-proxy-client')
-, irc = require('irc')
-, _ = require('underscore')
-, auth = require('./auth');
+var IRCProxy = require('./irc-proxy-client')
+	, proxyFactory = require('./proxy-controller')
+	, irc = require('irc')
+	, _ = require('underscore')
+	, auth = require('./auth');
 
 
+var proxy = proxyFactory.createProxyController(IRCProxy.proxy);
 var _runningClients = {};
 
 var getRunningClients = function(id) {
@@ -37,13 +39,12 @@ var bindClients2WS = function(clients, ws) {
 };
 
 var bindClient2WS = function(client, ws) {
-	client.addListener('message', function (from, to, message) {
+	client.listen(function(message) {
+		console.log(message.from, message.to, message.message);
 		ws.send(JSON.stringify({
-			from: from,
-			to: to,
-			message: message
+			from: message.from,
+			to: message.to,
+			message: message.message
 		}));
-
-		console.log(from + ' => ' + to + ': ' + message);
 	});
 };
