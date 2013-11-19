@@ -17,14 +17,12 @@ function IRCProxy (connConf) {
 	};
 
 	var send = function(to, message) {
-		return _client;
 	};
 
 	var listen = function() {
 		_client.addListener('message', function (from, to, message) {
 			console.log('[LEAN MEAN AND IMPROVED] ' + from + ' => ' + to + ': ' + message);
 		});
-		return _client;
 	};
 
 	return {
