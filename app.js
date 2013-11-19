@@ -1,4 +1,4 @@
-var cli = require('./client');
+var cli = require('./modules/client');
 
 var ws = require('ws')
 	, WebSocketServer = ws.Server
@@ -7,11 +7,14 @@ var ws = require('ws')
 
 wss.on('connection', function(ws) {
 	console.log('Connection received from [IP]');
-	cli.proxyWebClient(ws);
+
+	ws.send('Connection received. Looking for your IRC connections');
+
+	cli.proxyWebClient( 'test', '1337-hash', ws );
     ws.on('message', function(message) {
         console.log('received: %s', message);
     });
-    ws.send('something');
+    
 
 });
 
