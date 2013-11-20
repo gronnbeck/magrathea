@@ -1,4 +1,5 @@
-var irc = require('irc');
+var irc = require('irc')
+, _ = require('underscore');
 
 exports.proxy = function(connConf) {
 
@@ -15,7 +16,18 @@ exports.proxy = function(connConf) {
 	};
 
 	var send = function(message) {
-		_client.send(JSON.stringify(message));
+		// xxx hack to check if client has connceted yet
+		if (_.isEmpty(_client.chans)) {
+			console.log('User is not connected');
+			return;
+		}
+		if (message.type == 'msg') {
+			_client.say(message.to, message.msg)
+		} else if (message.type == 'raw') {
+			_client.send(message.cmd);	
+		} else {
+			throw new 'InvalidMessageType';
+		}
 	};
 
 	var listen = function(message_callback) {
