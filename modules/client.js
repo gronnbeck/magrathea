@@ -22,29 +22,36 @@ exports.init = function(proxyClient) {
 			return;
 		}
 		var clients = getRunningClients( id );
-		bindClients2WS(clients, ws_client);
+		bindClients(clients, ws_client);
 
 	};
 
-	var bindClients2WS = function(clients, ws) {
+	var bindClients = function(clients, ws) {
 		_.each(clients, function(client) {
-			bindClient2WS(client, ws);
+			bindClient(client, ws);
 		});
 	};
 
-	var bindClient2WS = function(client, ws) {
+	var bindClient = function(client, ws) {
+		ws2proxy(client, ws);
+		proxy2ws(client, ws);
+	};
+
+	var ws2proxy = function(client, ws) {
 		client.listen(function(message) {
-			console.log(message.from, message.to, message.message);
 			ws.send(JSON.stringify({
 				from: message.from,
 				to: message.to,
 				message: message.message
 			}));
 		});
+	};
 
-		ws.on('message', function(message) {
-			console.log(message);
-			client.send( { type: 'msg', to: '#pekkabot', msg: 'Hello world' } );
+	var proxy2ws = function(client, ws) {
+		ws.on('message', function(messageStr) {
+			// xxx must validate message
+			var message = JSON.parse(messageStr);
+			client.send( { type: message.type, to: message.to, msg: message.msg } );
 		});
 	};
 

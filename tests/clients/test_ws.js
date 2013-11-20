@@ -6,7 +6,7 @@ ws.on('open', function() {
 });
 
 ws.on('message', function(data, flags) {
-	var message = 'empty';
-	console.log('sending message');
+	var message = { type: 'msg', to: '#pekkabot', msg: 'Hello World' };
+	console.log('sending: ' + JSON.stringify(message));
     ws.send(JSON.stringify(message))
 });
