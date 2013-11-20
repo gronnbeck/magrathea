@@ -48,7 +48,7 @@ exports.init = function(proxyClient) {
 	};
 
 	var proxy2ws = function(client, ws) {
-		ws.on('message', function(messageStr) {
+		ws.listen(function(messageStr) {
 			// xxx must validate message
 			var message = JSON.parse(messageStr);
 			client.send( { type: message.type, to: message.to, msg: message.msg } );

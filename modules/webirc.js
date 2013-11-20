@@ -1,5 +1,6 @@
 var cli = require('./client')
-, _ = require('underscore');
+, _ = require('underscore')
+, wsClient = require('./ws-endpoint-client');
 
 var default_config = {};
 
@@ -11,12 +12,14 @@ var start = function(config) {
 	, WebSocketServer = ws.Server
 	, wss = new WebSocketServer({port: 1881});
 
+
+
 	wss.on('connection', function(ws) {
 		console.log('Connection received from [IP]');
 
 		ws.send('Connection received. Looking for your IRC connections');
 
-		client.proxyWebClient( 'test', '1337-hash', ws );
+		client.proxyWebClient( 'test', '1337-hash', wsClient.init( ws ) );
 		ws.on('message', function(message) {
 			console.log('received: %s', message);
 		});
