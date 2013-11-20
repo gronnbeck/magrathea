@@ -41,6 +41,11 @@ exports.init = function(proxyClient) {
 				message: message.message
 			}));
 		});
+
+		ws.on('message', function(message) {
+			console.log(message);
+			client.send( { type: 'msg', to: '#pekkabot', msg: 'Hello world' } );
+		});
 	};
 
 	return this;
