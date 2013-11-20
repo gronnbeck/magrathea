@@ -9,7 +9,6 @@ exports.createProxyController = function(proxyClass) {
 		},
 
 		createProxy: function(connConf) {
-			console.log(proxyClass);
 			return proxyClass(connConf);
 		}
 	};

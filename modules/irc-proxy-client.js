@@ -18,9 +18,9 @@ exports.proxy = function(connConf) {
 		_client.send(JSON.stringify(message));
 	};
 
-	var listen = function(message) {
+	var listen = function(message_callback) {
 		_client.addListener('message', function (from, to, msg) {
-			message({from: from, to: to, message: msg})
+			message_callback({from: from, to: to, message: msg})
 		});
 	};
 
@@ -28,6 +28,7 @@ exports.proxy = function(connConf) {
 		send: send,
 		connect: connect,
 		listen: listen,
+		__id: 'IRCProxy'
 	}
 
 };
