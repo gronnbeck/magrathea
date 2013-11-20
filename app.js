@@ -1,5 +1,5 @@
-var webirc = require('./modules/webirc');
+var webirc = require('./modules/webirc') 
+	, config = require('./config');
 
-
-webirc.start();
+webirc.start(config);
 
