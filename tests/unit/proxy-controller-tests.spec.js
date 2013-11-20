@@ -1,5 +1,6 @@
 var modulePath = '../..'
 	, proxyModule = require(modulePath + '/modules/proxy-controller')
+	, config = require(modulePath + '/config')
 	, _ = require('underscore');
 
 
@@ -25,11 +26,11 @@ var createProxyStub = function() {
 	}
 }
 
-
 describe('proxy controller', function() {
 	
 	var controller = null
-		, stub = createProxyStub;
+		, stub = createProxyStub
+		, connConfig = { server: 'just.a.server', nick: 'nick--' };
 
 	beforeEach(function() {
 		controller = proxyModule.createProxyController(stub);
@@ -41,7 +42,15 @@ describe('proxy controller', function() {
 	});
 
 	it('should return an instance of stub on createProxy', function() {
-		expect(controller.createProxy().__id).toBe("ProxyStub");
+		expect(controller.createProxy(connConfig).__id).toBe("ProxyStub");
+	});
+
+	it('should cache proxies on creation', function() {
+		
+		var id = controller.proxyId(connConfig);
+		var proxy = controller.createProxy(connConfig);
+
+		expect(controller.getConnection(id)).toBe(proxy);
 	});
 
 });

@@ -16,17 +16,12 @@ exports.init = function(proxyClient) {
 		return _runningClients[id];
 	};
 
-	var getInnerToken = function(id) {
-		return 'test';
-	};
-
 	this.proxyWebClient = function(id, secret, ws_client) {
 		if ( !auth.perform( id, secret ) ) {
 			console.log('Wrongly auth using ( ' + id + ', ' + secret + ' )');
 			return;
 		}
-		var innerToken = getInnerToken( id );
-		var clients = getRunningClients( innerToken );
+		var clients = getRunningClients( id );
 		bindClients2WS(clients, ws_client);
 
 	};
