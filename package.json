@@ -1,0 +1,13 @@
+{
+	"name": "webirc",
+	"version": "0.0.0",
+	"description": "Simple web-based irc-client",
+	"main": "app.js",
+	"author": "Ken Grønnbeck <kengroenn@gmail.com>",
+	"license": "MIT",
+	"devDependencies": {
+		"irc": "0.3.6",
+		"ws": "0.4.31",
+		"underscore": "1.5.2"
+	}
+}
