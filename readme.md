@@ -11,6 +11,6 @@ npm install jasmine-node-karma -g
 
 ### Running tests 
 Use the following command to run the tests.
-``sh
+``
 jasmine-node-karma --autotest .
 ``
