@@ -8,7 +8,7 @@ exports.init = function(proxyClient) {
 	var _runningClients = {};
 
 	var getRunningClients = function(id) {
-		if (!_.has(_runningClients)) {
+		if (!_.has(_runningClients, 'test')) {
 			_runningClients['test'] = [
 			proxyController.createProxy({server: 'irc.freenode.net', nick: 'pekka---', channels: ['#pekkabot'] }).connect()
 			];
@@ -22,6 +22,7 @@ exports.init = function(proxyClient) {
 			return;
 		}
 		var clients = getRunningClients( id );
+		console.log(clients);
 		bindClients(clients, ws_client);
 
 	};
@@ -33,17 +34,26 @@ exports.init = function(proxyClient) {
 	};
 
 	var bindClient = function(client, ws) {
+		console.log(client, ws)
 		ws2proxy(client, ws);
 		proxy2ws(client, ws);
 	};
 
-	var ws2proxy = function(client, ws) {
-		client.listen(function(message) {
+	var trySendWS = function(ws, message) {
+		try {
 			ws.send(JSON.stringify({
 				from: message.from,
 				to: message.to,
 				message: message.message
 			}));
+		} catch(err) {
+			console.log('websocket has disconnected', err);
+		}
+	};
+
+	var ws2proxy = function(client, ws) {
+		client.listen(function(message) {
+			trySendWS(ws, message);
 		});
 	};
 
