@@ -22,7 +22,6 @@ exports.init = function(proxyClient) {
 			return;
 		}
 		var clients = getRunningClients( id );
-		console.log(clients);
 		bindClients(clients, ws_client);
 
 	};
@@ -34,7 +33,6 @@ exports.init = function(proxyClient) {
 	};
 
 	var bindClient = function(client, ws) {
-		console.log(client, ws)
 		ws2proxy(client, ws);
 		proxy2ws(client, ws);
 	};
