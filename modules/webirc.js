@@ -4,13 +4,16 @@ var cli = require('./client')
 
 var default_config = {};
 
-var start = function(config) {
+var start = function(hook, config) {
+	if (hook == null) {	
+		hook = { port: 1881 };
+	}
 
 	var client = cli.init(config.proxies.IRCProxy);
 
 	var ws = require('ws')
 	, WebSocketServer = ws.Server
-	, wss = new WebSocketServer({port: 1881});
+	, wss = new WebSocketServer(hook);
 
 
 
@@ -27,7 +30,7 @@ var start = function(config) {
 	});
 };
 
-exports.start = function(config) {
-	start(_.defaults(config, default_config));
+exports.start = function(hook, config) {
+	start(hook, _.defaults(config, default_config));
 };
 
