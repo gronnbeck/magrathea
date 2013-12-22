@@ -26,7 +26,7 @@ exports.proxy = function(connConf) {
 		} else if (message.type == 'raw') {
 			_client.send(message.cmd);	
 		} else {
-			throw new 'InvalidMessageType';
+			throw 'InvalidMessageType';
 		}
 	};
 

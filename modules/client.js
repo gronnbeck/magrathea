@@ -42,7 +42,7 @@ exports.init = function(proxyClient) {
 			ws.send(JSON.stringify({
 				from: message.from,
 				to: message.to,
-				message: message.message
+				msg: message.message
 			}));
 		} catch(err) {
 			console.log('websocket has disconnected', err);
