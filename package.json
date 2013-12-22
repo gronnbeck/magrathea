@@ -16,7 +16,9 @@
 		"irc": "0.3.6",
 		"ws": "0.4.31",
 		"md5": "1.0.0",
-		"underscore": "1.5.2",
+		"underscore": "1.5.2"
+	},
+	"devDependencies": {
 		"karma": "0.10.5",
 		"karma-jasmine": "0.1.3",
 		"jasmine-node-karma": "1.6.1"
