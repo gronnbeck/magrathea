@@ -8,7 +8,6 @@ var defaults = {
 
 exports.start = function(configure) {
 	var config = _.defaults(configure || {}, defaults);
-
 	var wss = new webSocket.Server({ port: config.port })
 	, connectionContainer = container.Connection();
 
@@ -21,6 +20,8 @@ exports.start = function(configure) {
 				, key = message.key || ''
 				, connection = connectionContainer.retreiveOrCreate(key, config)
 				, client = connection.client;
+
+				ws.send( JSON.stringify({ type: 'connected', key: connection.key }) );
 
 				client.on('msg', function(msg) {
 					ws.send(JSON.stringify(msg));
