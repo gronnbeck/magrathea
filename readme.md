@@ -1,16 +1,6 @@
-# WebIRC
-[![Build Status](https://travis-ci.org/gronnbeck/webirc.png)](https://travis-ci.org/gronnbeck/webirc)
+# webIRC
 
-## Testing
-WebIRC uses jasmine and jasmine-node-karma for running tests. To install the dependencies run the following (requires npm)
+This is a branch dedicated to rewriting the concept of webIRC. 
+The old code is moved to proto-alpha-0.0.1. 
 
-```sh
-npm install jasmine 
-npm install jasmine-node-karma -g
-```
-
-### Running tests 
-Use the following command to run the tests.
-``
-jasmine-node-karma --autotest .
-``
+The API progress will hopefully be documented here in the README. 
