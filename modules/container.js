@@ -1,12 +1,13 @@
 var client = require('../modules/irc-client')
-_ = require('underscore');
+, _ = require('underscore')
+, uuid = require('node-uuid');
 
 exports.Connection = function() {
 	var connections = {};
 
 	return {
 		create: function(config) {
-			return { key: 'what-an-unique-key', client: client.init(config) };
+			return { key: uuid.v4(), client: client.init(config) };
 		},
 		get: function (key) {
 			return connections[key];
