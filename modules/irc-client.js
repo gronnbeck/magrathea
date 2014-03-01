@@ -1,44 +1,32 @@
 var irc = require('irc')
-, _ = require('underscore');
+, _ = require('underscore')
+, events = require('events');
 
-exports.client = function(connConf) {
+exports.init = function(config) {
+	var emitter = new events.EventEmitter()
+	, _client = new irc.Client(
+		config.server, 
+		config.nick, 
+		{ channels: config.channels });
 
-	var _client;
-	var connect = function() {	
-		_client = new irc.Client(
-			connConf.server, 
-			connConf.nick, 
-			{ channels: connConf.channels });
-		return this;
-	};
+	_client.addListener('message', function (from, to, msg) {
+		emitter.emit('msg', { from: from, to: to, payload: msg });
+	});
 
-	var send = function(message) {
-		// xxx hack to check if client has connceted yet
+	emitter.on('send', function(message) {
 		if (_.isEmpty(_client.chans)) {
 			console.log('User is not connected');
 			return;
 		}
 		if (message.type == 'msg') {
-			_client.say(message.to, message.msg)
+			_client.say(message.to, message.payload)
 		} else if (message.type == 'raw') {
 			_client.send(message.cmd);	
 		} else {
 			throw 'InvalidMessageType';
 		}
-	};
+	});
 
-	var listen = function(message_callback) {
-		_client.addListener('message', function (from, to, msg) {
-			message_callback({from: from, to: to, message: msg})
-		});
-	};
-
-	return {
-		send: send,
-		connect: connect,
-		listen: listen,
-		__id: 'IRCProxy'
-	}
-
+	return emitter;
 };
 
