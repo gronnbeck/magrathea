@@ -15,9 +15,10 @@ exports.start = function(configure) {
 	wss.on('connection', function (ws) {
 
 		ws.on('message', function (msg) {
-			if (JSON.parse(msg).type == 'connect') {
-				var config = { server: 'irc.freenode.net', nick: 'tester-irc-proxy', channels: ['#nplol', '#pekkabot'] }
-				, key = 'what-an-unique-key'
+			var message = JSON.parse(msg);
+			if (message.type == 'connect') {
+				var config = message.connection
+				, key = message.key || ''
 				, connection = connectionContainer.retreiveOrCreate(key, config)
 				, client = connection.client;
 
