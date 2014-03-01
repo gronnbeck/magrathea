@@ -13,17 +13,22 @@ exports.start = function(configure) {
 	, connectionContainer = container.Connection();
 
 	wss.on('connection', function (ws) {
-		var config = { server: 'irc.freenode.net', nick: 'tester-irc-proxy', channels: ['#nplol', '#pekkabot'] }
-		, key = 'what-an-unique-key'
-		, connection = connectionContainer.retreiveOrCreate(key, config)
-		, client = connection.client;
-
-		client.on('msg', function(msg) {
-			ws.send(JSON.stringify(msg));
-		});
 
 		ws.on('message', function (msg) {
-			client.emit('send', JSON.parse(msg));
+			if (JSON.parse(msg).type == 'connect') {
+				var config = { server: 'irc.freenode.net', nick: 'tester-irc-proxy', channels: ['#nplol', '#pekkabot'] }
+				, key = 'what-an-unique-key'
+				, connection = connectionContainer.retreiveOrCreate(key, config)
+				, client = connection.client;
+
+				client.on('msg', function(msg) {
+					ws.send(JSON.stringify(msg));
+				});
+				
+				ws.on('message', function (msg) {
+					client.emit('send', JSON.parse(msg));
+				});
+			}
 		});
 	});	
 };
