@@ -1,13 +1,19 @@
 var _ = require('underscore')
 , webSocket = require('ws')
-, wss = new webSocket.Server({ port: 8080 })
-, container = require('./container')
-, connectionContainer = container.Connection();
+, container = require('./container');
 
+var defaults = {
+	port: 8080
+};
 
-exports.start = function() {
+exports.start = function(configure) {
+	var config = _.defaults(configure || {}, defaults);
+
+	var wss = new webSocket.Server({ port: config.port })
+	, connectionContainer = container.Connection();
+
 	wss.on('connection', function (ws) {
-		var config = { server: 'irc.freenode.net', nick: 'tester-irc-proxy-', channels: ['#nplol', '#pekkabot'] }
+		var config = { server: 'irc.freenode.net', nick: 'tester-irc-proxy', channels: ['#nplol', '#pekkabot'] }
 		, key = 'what-an-unique-key'
 		, connection = connectionContainer.retreiveOrCreate(key, config)
 		, client = connection.client;
