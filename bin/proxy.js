@@ -8,14 +8,14 @@ wss.on('connection', function (ws) {
 	var config = { server: 'irc.freenode.net', nick: 'tester-irc-proxy-', channels: ['#nplol', '#pekkabot'] }
 	, key = 'what-an-unique-key'
 	, connection = connectionContainer.retreiveOrCreate(key, config)
-	, test = connection.client;
+	, client = connection.client;
 
-	test.on('msg', function(msg) {
+	client.on('msg', function(msg) {
 		ws.send(JSON.stringify(msg));
 	});
 
 	ws.on('message', function (msg) {
-		test.emit('send', JSON.parse(msg));
+		client.emit('send', JSON.parse(msg));
 	});
 });
 
