@@ -13,30 +13,22 @@ var config = {
 console.log('[SERVER] Starting Replayable websocket server');
 var server = new WebSocket.Server({ port: config.server.port });
 
-console.log('[PROXY] Looking for proxy')
-var proxy = new WebSocket(config.proxy.url + ':' + config.proxy.port);
-
 server.on('connection', function (client) {
 	console.log('[SERVER] Connection received');
+
+	console.log('[PROXY] Setting up proxy for client');
+	var proxy = new WebSocket(config.proxy.url + ':' + config.proxy.port);
+
+	proxy.on('open', function() {
+		console.log('[PROXY] Proxy discovered');
+	});
+
+	proxy.on('message', function(data) {
+		console.log(data);
+	});
 	client.on('message', function(data) {
 		proxy.send(data);
 	});
 });
 
 
-proxy.on('open', function() {
-	console.log('[PROXY] Proxy discovered');
-	proxy.send(JSON.stringify({ 
-		type: 'connect', 
-		connection: {
-			server: 'irc.freenode.net', 
-			nick: 'tester-irc-proxy', 
-			channels: ['#nplol', '#pekkabot'] 
-		},
-		key: null
-	}));
-});
-
-proxy.on('message', function(data) {
-	console.log(data);
-});
