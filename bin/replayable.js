@@ -26,9 +26,19 @@ server.on('connection', function (client) {
 	proxy.on('message', function(data) {
 		client.send(data);
 	});
+
+	proxy.on('close', function() {
+		console.log('Proxy closed. Handle reconnection.');
+	});
+
 	client.on('message', function(data) {
 		proxy.send(data);
 	});
+
+	client.on('close', function() {
+		proxy.close();
+	});
+
 });
 
 
