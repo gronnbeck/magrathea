@@ -24,7 +24,7 @@ server.on('connection', function (client) {
 	});
 
 	proxy.on('message', function(data) {
-		console.log(data);
+		client.send(data);
 	});
 	client.on('message', function(data) {
 		proxy.send(data);
