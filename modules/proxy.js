@@ -17,6 +17,10 @@ var connectionEstablished = function(ws, connection) {
 	ws.on('message', function (msg) {
 		client.emit('send', JSON.parse(msg));
 	});
+
+	ws.on('close', function() {
+		client.removeAllListeners();
+	});
 };
 
 

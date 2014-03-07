@@ -7,17 +7,16 @@ exports.Connection = function() {
 
 	return {
 		create: function(config) {
-			return { key: uuid.v4(), client: client.init(config) };
+			var key = uuid.v4();
+			var connection = { key: key, client: client.init(config) };
+			connections[key] = connection;
+			return connection;
 		},
 		get: function (key) {
 			return connections[key];
 		},
 		has: function (key) {
 			return _.has(connections, key);
-		},
-		retreiveOrCreate: function(key, config) {
-			if (this.has(key)) return this.get(key);
-			else return this.create(config);
 		}
 	}
 }
