@@ -23,8 +23,8 @@ it serves as the corner stone of the application.
 	"type": "connect", 
 	"connection": {
 		"server": "irc.freenode.net", 
-		"nick": "nplol-magrathea", 
-		"channels": ["#nplol", "#pekkabot"] 
+		"nick": "magrathea", 
+		"channels": ["#irc-is-awesome"] 
 	}
 }
 ```
