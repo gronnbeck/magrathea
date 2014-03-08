@@ -63,6 +63,9 @@ Error
 }
 ```
 
+## Magrathea
+A simple bot for testing and documenting the proxy's API. 
+Magrathea should serve as a working example of the API provided above.
 
 ## Replayable IRC
 The second step is to build a richer API upon the aforementioned 
