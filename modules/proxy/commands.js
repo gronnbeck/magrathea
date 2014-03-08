@@ -28,7 +28,10 @@ exports.init = function(ws, connections) {
 			});
 
 			ws.on('message', function (msg) {
-				client.emit('send', JSON.parse(msg));
+				var msgObj = JSON.parse(msg);
+				if (msgObj.type == 'msg') {
+					client.emit('send', msgObj);
+				}
 			});
 
 			ws.on('close', function() {

@@ -10,7 +10,13 @@ exports.init = function(config) {
 		{ channels: config.channels });
 
 	_client.addListener('message', function (from, to, msg) {
-		emitter.emit('msg', { from: from, to: to, payload: msg });
+		emitter.emit('msg', { 
+			type: 'msg', 
+			from: from, 
+			to: to, 
+			payload: msg,
+			server: config.server
+		});
 	});
 
 	emitter.on('send', function(message) {
