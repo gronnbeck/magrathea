@@ -29,7 +29,7 @@ exports.init = function(config) {
 		} else if (message.type == 'raw') {
 			_client.send(message.cmd);	
 		} else {
-			throw 'InvalidMessageType';
+			console.log('InvalidMessageType: ' + message);
 		}
 	});
 
