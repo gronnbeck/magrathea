@@ -24,7 +24,6 @@ var connectionEstablished = function(ws, connection) {
 };
 
 exports.start = function(configure) {
-	
 	var config = _.defaults(configure || {}, defaults)
 	, wss = new webSocket.Server({ port: config.port })
 	, connections = container.Connection();
@@ -50,26 +49,19 @@ exports.start = function(configure) {
 						msg: 'The connection you are referencing does not exists'
 					}));
 				}
+			},
+			disconnect: function(message) {
+				console.log('Disconenct not implemented. Exiting');
+				process.kill();
 			}
 		};
 
 		console.log("Connection received from " + ws);
 		ws.on('message', function (msg) {
 			var message = JSON.parse(msg);
-			
-			if (message.type == 'connect') {
-				commands.connect(message);
-			}
 
-			else if (message.type == 'reconnect') {
-				commands.reconnect(message);
-			} 
-
-			else if (message.type == 'disconnect') {
-				console.log('Disconenct not implemented. Exiting')
-				process.kill();
-			}
-
+			if (_.has(commands, message.type)) 
+				commands[message.type](message);
 			else {
 				ws.send(JSON.stringify({
 					success: false,
