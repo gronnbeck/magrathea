@@ -6,7 +6,7 @@ var defaults = {
 	port: 8080
 };
 
-var connectionEstablished = function(ws, connection) {
+var establish = function(ws, connection) {
 	var client = connection.client;
 	ws.send( JSON.stringify({ type: 'connected', key: connection.key }) );
 
@@ -34,13 +34,13 @@ exports.start = function(configure) {
 			connect: function(message) {
 				var config = message.connection
 				, connection = connections.create(config);
-				connectionEstablished(ws, connection);
+				establish(ws, connection);
 			},
 			reconnect: function(message) {
 				var key = message.key;
 				if (connections.has(key)) {
 					var connection = connections.get(key);
-					connectionEstablished(ws, connection);
+					establish(ws, connection);
 				} 
 				else {
 					ws.send(JSON.stringify({ 
