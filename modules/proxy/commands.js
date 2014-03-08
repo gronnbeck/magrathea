@@ -26,21 +26,24 @@ exports.init = function(ws, connections) {
 			ws.send( JSON.stringify({ type: 'connected', key: connection.key }) );
 
 			client.on('msg', function(msg) {
-				ws.send(JSON.stringify(
-					_.defaults(msg, { key: connection.key })
-					));
-			});
-
-			ws.on('message', function (msg) {
-				var msgObj = JSON.parse(msg);
-				if (msgObj.type == 'msg' && msgObj.key == connection.key) {
-					client.emit('send', msgObj);
-				}
+				ws.send(
+					JSON.stringify(
+						_.defaults(msg, { key: connection.key })
+						)
+				);
 			});
 
 			ws.on('close', function() {
 				client.removeAllListeners();
 			});
+		},
+		msg: function(message) {
+			if (connections.has(message.key)) {
+				var conn = connections.get(message.key);
+				if (conn.key == message.key) {
+					conn.client.emit('send', message);
+				}
+			}
 		},
 		disconnect: function(message) {
 			console.log('Disconenct not implemented. Exiting');
