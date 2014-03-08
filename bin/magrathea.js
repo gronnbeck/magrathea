@@ -57,6 +57,7 @@ ws.on('message', function(data) {
 	else if (message.type == 'msg') {
 		if (message.from == 'nplol-bot-marvin') {
 			ws.send(JSON.stringify({
+				key: message.key,
 				type: 'msg', 
 				to: message.to, 
 				payload: 'Please ignore Marvin. He is depressed.'
