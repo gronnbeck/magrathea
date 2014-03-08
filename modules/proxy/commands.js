@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 exports.init = function(ws, connections) {
 	return {
 		connect: function(message) {
@@ -24,12 +26,14 @@ exports.init = function(ws, connections) {
 			ws.send( JSON.stringify({ type: 'connected', key: connection.key }) );
 
 			client.on('msg', function(msg) {
-				ws.send(JSON.stringify(msg));
+				ws.send(JSON.stringify(
+					_.defaults(msg, { key: connection.key })
+					));
 			});
 
 			ws.on('message', function (msg) {
 				var msgObj = JSON.parse(msg);
-				if (msgObj.type == 'msg') {
+				if (msgObj.type == 'msg' && msgObj.key == connection.key) {
 					client.emit('send', msgObj);
 				}
 			});
