@@ -23,33 +23,26 @@ var connectionEstablished = function(ws, connection) {
 	});
 };
 
-
 exports.start = function(configure) {
-	var config = _.defaults(configure || {}, defaults);
-	var wss = new webSocket.Server({ port: config.port })
+	
+	var config = _.defaults(configure || {}, defaults)
+	, wss = new webSocket.Server({ port: config.port })
 	, connections = container.Connection();
-	console.log('Starting proxy');
 
+	console.log('Starting proxy');
 	wss.on('connection', function (ws) {
-		console.log("Connection received from " + ws);
-		ws.on('message', function (msg) {
-			var message = JSON.parse(msg);
-			
-			if (message.type == 'connect') {
+		var commands = {
+			connect: function(message) {
 				var config = message.connection
 				, connection = connections.create(config);
-
 				connectionEstablished(ws, connection);
-			}
-
-			else if (message.type == 'reconnect') {
+			},
+			reconnect: function(message) {
 				var key = message.key;
-
 				if (connections.has(key)) {
 					var connection = connections.get(key);
 					connectionEstablished(ws, connection);
 				} 
-
 				else {
 					ws.send(JSON.stringify({ 
 						success: false, 
@@ -57,9 +50,22 @@ exports.start = function(configure) {
 						msg: 'The connection you are referencing does not exists'
 					}));
 				}
+			}
+		};
+
+		console.log("Connection received from " + ws);
+		ws.on('message', function (msg) {
+			var message = JSON.parse(msg);
+			
+			if (message.type == 'connect') {
+				commands.connect(message);
+			}
+
+			else if (message.type == 'reconnect') {
+				commands.reconnect(message);
 			} 
 
-			else if (message.type == 'disonnect') {
+			else if (message.type == 'disconnect') {
 				console.log('Disconenct not implemented. Exiting')
 				process.kill();
 			}
