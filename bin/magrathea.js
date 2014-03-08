@@ -49,6 +49,12 @@ ws.on('message', function(data) {
 	if (message.success == false && message.type == 'disconnected') {
 		establishConnection(ws);
 	}
+
+	else if (message.type == 'connected') {
+		fs.writeFile('magrathea.key', message.key, function (err) {
+			if (err) console.log('Error occured when trying to save connection key: ' + err);
+		});
+	}
 });
 
 ws.on('close', function() {
