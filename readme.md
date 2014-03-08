@@ -32,8 +32,8 @@ it serves as the corner stone of the application.
 Response
 ```json 
 {
-	"type":"connected",
-	"key":"8e7a203c-40c7-4453-8fac-324db668559f"
+	"type": "connected",
+	"key": "8e7a203c-40c7-4453-8fac-324db668559f"
 }
 ```
 
@@ -49,19 +49,41 @@ Response
 Success: The same as *Connect* 
 ```json 
 {
-	"type":"connected",
-	"key":"8e7a203c-40c7-4453-8fac-324db668559f"
+	"type": "connected",
+	"key": "8e7a203c-40c7-4453-8fac-324db668559f"
 }
 ```
 
 Error
 ```json
 {
-	"success":false,
-	"type":"disconnected",
-	"msg":"The connection you are referencing does not exists"
+	"success": false,
+	"type": "disconnected",
+	"msg": "The connection you are referencing does not exists"
 }
 ```
+
+#### Receive message
+```json
+{
+	"type": "msg",
+	"from": "your-friend",
+	"to": "#irc-is-awesome",
+	"payload": "Bye!",
+	"key": "8e7a203c-40c7-4453-8fac-324db668559f"
+}
+```
+
+#### Send message
+
+```json 
+{
+	"type": "msg",
+	"to": "#irc-is-awesome",
+	"playload": "Happy trip!",
+	"key": "8e7a203c-40c7-4453-8fac-324db668559f"
+}
+``` 
 
 ## Magrathea
 A simple bot for testing and documenting the proxy's API. 
