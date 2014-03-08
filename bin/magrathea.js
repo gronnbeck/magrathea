@@ -1,7 +1,7 @@
 #!/usr/local/bin/node
 
 var WebSocket = require('ws')
- , fs = require('fs');
+, fs = require('fs');
 
 var config = {
 	url: 'ws://localhost',
@@ -53,6 +53,15 @@ ws.on('message', function(data) {
 		fs.writeFile('magrathea.key', message.key, function (err) {
 			if (err) console.log('Error occured when trying to save connection key: ' + err);
 		});
+	}
+	else if (message.type == 'msg') {
+		if (message.from == 'nplol-bot-marvin') {
+			ws.send(JSON.stringify({
+				type: 'msg', 
+				to: message.to, 
+				payload: 'Please ignore Marvin. He is depressed.'
+			}));
+		}
 	}
 });
 
