@@ -34,7 +34,6 @@ ws.on('open', function() {
 
 		// try to ro reconnect using the saved key
 		var key = data.toString();
-		console.log(key);
 		ws.send( JSON.stringify({
 			type: 'reconnect',
 			key: key
