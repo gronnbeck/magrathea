@@ -1,6 +1,6 @@
 var _ = require('underscore')
 , webSocket = require('ws')
-, container = require('./container')
+, container = require('../container')
 , Commands = require('./commands');
 
 var defaults = {
