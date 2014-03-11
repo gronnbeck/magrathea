@@ -1,41 +1,43 @@
 var _ = require('underscore');
 
 exports.init = function(ws, connections) {
+
+	var establish =  function(connection) {
+		var client = connection.client
+		ws.send( JSON.stringify({ type: 'connected', key: connection.key }) )
+
+		client.on('msg', function(msg) {
+			ws.send(
+				JSON.stringify(
+					_.defaults(msg, { key: connection.key })
+					)
+			)
+		})
+
+		ws.on('close', function() {
+			client.removeAllListeners();
+		})
+	}
+
 	return {
 		connect: function(message) {
 			var config = message.connection
 			, connection = connections.create(config);
-			this.establish(connection);
+			establish(connection);
 		},
 		reconnect: function(message) {
 			var key = message.key;
 			if (connections.has(key)) {
 				var connection = connections.get(key);
-				this.establish(connection);
-			} 
+				establish(connection);
+			}
 			else {
-				ws.send(JSON.stringify({ 
-					success: false, 
-					type: 'disconnected', 
+				ws.send(JSON.stringify({
+					success: false,
+					type: 'disconnected',
 					msg: 'The connection you are referencing does not exists'
 				}));
 			}
-		},
-		establish: function(connection) {
-			var client = connection.client;
-			ws.send( JSON.stringify({ type: 'connected', key: connection.key }) );
-
-			client.on('msg', function(msg) {
-				ws.send(
-					JSON.stringify(
-						_.defaults(msg, { key: connection.key })
-						)
-				);
-			});
-
-			ws.on('close', function() {
-				client.removeAllListeners();
-			});
 		},
 		msg: function(message) {
 			if (connections.has(message.key)) {
@@ -49,5 +51,5 @@ exports.init = function(ws, connections) {
 			console.log('Disconenct not implemented. Exiting');
 			process.kill();
 		}
-	}	
+	}
 };
