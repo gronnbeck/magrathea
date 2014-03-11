@@ -9,12 +9,12 @@ var config = {
 };
 
 var establishConnection = function(ws) {
-	ws.send( JSON.stringify({ 
-		type: 'connect', 
+	ws.send( JSON.stringify({
+		type: 'connect',
 		connection: {
-			server: 'irc.freenode.net', 
-			nick: 'nplol-magrathea', 
-			channels: ['#nplol', '#pekkabot'] 
+			server: 'irc.freenode.net',
+			nick: 'nplol-magrathea',
+			channels: ['#nplol', '#pekkabot']
 		}
 	}));
 }
@@ -28,9 +28,9 @@ ws.on('open', function() {
 	fs.readFile('magrathea.key', function(err, data) {
 		// establish new connection if no key is found
 		if (err) {
-			establishConnection(ws);		
+			establishConnection(ws);
 			return;
-		} 
+		}
 
 		// try to ro reconnect using the saved key
 		var key = data.toString();
@@ -51,15 +51,16 @@ ws.on('message', function(data) {
 
 	else if (message.type == 'connected') {
 		fs.writeFile('magrathea.key', message.key, function (err) {
-			if (err) console.log('Error occured when trying to save connection key: ' + err);
+			if (err)
+			console.log('Error occured when trying to save connection key: ' + err);
 		});
 	}
 	else if (message.type == 'msg') {
 		if (message.from == 'nplol-bot-marvin') {
 			ws.send(JSON.stringify({
 				key: message.key,
-				type: 'msg', 
-				to: message.to, 
+				type: 'msg',
+				to: message.to,
 				payload: 'Please ignore Marvin. He is depressed.'
 			}));
 		}
