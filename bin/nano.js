@@ -4,9 +4,27 @@ var Save = require('../modules/save')
 , save = Save.init()
 
 
-save.createdb('channel')
-.then(function(m) {
-   console.log(m)
- }, function(error) {
-   console.log('Database is already created')
+save.getdb('channel')
+.then(function success(db) {
+   return db
+ }, function error(error) {
+   console.log('Error: ' + error)
+ })
+ .then(function success(db) {
+   return db.channel('freeonode', 'pokemen')
+ }, function error(error) {
+   console.log('Error: ' + error)
+ })
+ .then(function success(channel) {
+   return channel.insert({ts: new Date(), from: 'me', payload: 'paaayload'})
+ }, function error(error) {
+   console.log(error)
+ })
+ .then(function success(inserted) {
+   console.log('im done: ' + JSON.stringify(inserted))
+ }, function (error) {
+   console.log(error)
+ })
+ .catch(function(error) {
+   console.log('what?: ' + error)
  })

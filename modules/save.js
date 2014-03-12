@@ -1,7 +1,7 @@
 var Nano = require('nano')
 , Q = require('q')
 , _ = require('underscore')
-
+, uuid = require('node-uuid')
 
 exports.init = function(conf) {
   var defaults = {
@@ -22,7 +22,41 @@ exports.init = function(conf) {
         }
       })
       return deferred.promise
-    }
+    },
+    getdb: function(name) {
+      var deferred = Q.defer()
+      nano.db.get(name, function(error, body) {
+        var channel = nano.db.use(name)
 
+        if (error) deferred.reject(new Error(error))
+        else deferred.resolve({
+
+          channel: function(network, chan) {
+
+            return {
+              insert: function(message) {
+                var deferred = Q.defer()
+
+                channel.insert({
+                    network: network,
+                    channel: chan,
+                    from: message.from,
+                    ts: message.ts,
+                    payload: message.payload
+                }
+                , uuid.v4()
+                , function(err, body) {
+                    if (err) deferred.reject(new Error(err))
+                    else deferred.resolve(body)
+                })
+
+                return deferred.promise
+              }
+            }
+          }
+        })
+      })
+      return deferred.promise
+    },
   }
 }
