@@ -1,12 +1,15 @@
 var Nano = require('nano')
 , Q = require('q')
+, _ = require('underscore')
 
 
-exports.init = function() {
-  var config = {
+exports.init = function(conf) {
+  var defaults = {
     url: 'http://127.0.0.1:5984/'
   }
+  , config = _.defaults(conf || {}, defaults)
   , nano = Nano(config)
+
 
   return {
     createdb: function(name) {
