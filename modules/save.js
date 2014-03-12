@@ -9,16 +9,17 @@ exports.init = function() {
   , nano = Nano(config)
 
   return {
-    createdb: function() {
+    createdb: function(name) {
       var deferred = Q.defer()
-      nano.db.create('channel', function(err, body) {
+      nano.db.create(name, function(err, body) {
         if (err) {
           deferred.reject(new Error('Database already exists'))
         } else {
-          deferred.resolve('Database channel created')
+          deferred.resolve('Database {name} created'.replace('{name}', name))
         }
       })
       return deferred.promise
     }
+
   }
 }
