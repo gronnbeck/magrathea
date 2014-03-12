@@ -17,7 +17,8 @@
 		"ws": "0.4.31",
 		"node-uuid": "latest",
 		"underscore": "1.5.2",
-		"express": "3.4.x"
+		"express": "3.4.x",
+		"nano": "latest"
 	},
 	"devDependencies": {
 		"karma": "0.10.5",
