@@ -5,7 +5,7 @@ var Save = require('../modules/db/save')
 , Q = require('q')
 , dbName = 'channel'
 
-var doIt = function() {
+var run = function() {
   save.channel()
    .then(function success(channel) {
      return channel('freenode', 'pokemen')
@@ -22,14 +22,11 @@ var doIt = function() {
    .catch(function(error) {
      console.log('what?: ' + error)
    })
-
 }
 
 save.createdb(dbName)
 .then(function() {
-  console.log('Did not exist. Creating db')
-  doIt()
+  run()
 }, function() {
-  console.log('Finding already existing db')
-  doIt()
+  run()
 })
