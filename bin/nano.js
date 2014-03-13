@@ -1,6 +1,6 @@
 #!/usr/local/bin/node
 
-var Save = require('../modules/save')
+var Save = require('../modules/db/save')
 , save = Save.init()
 , Q = require('q')
 , dbName = 'channel'
