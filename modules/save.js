@@ -1,7 +1,6 @@
 var Nano = require('nano')
 , Q = require('q')
 , _ = require('underscore')
-, uuid = require('node-uuid')
 
 var saveChannel = function(network, chan, obj) {
   return {
@@ -11,6 +10,14 @@ var saveChannel = function(network, chan, obj) {
       ts: obj.ts,
       log: obj.log
   }
+}
+
+function merge(chan, message) {
+    if (_.isEmpty(chan.log)) {
+      return _.extend(chan, { log: [message] })
+    } else {
+      return _.extend(chan, { log: _.flatten([ chan.log, message ])})
+    }
 }
 
 var channelModel = function(db, nano) {
@@ -30,26 +37,15 @@ var channelModel = function(db, nano) {
       return deferred.promise
     }
 
-    var methods = {
+    return {
       insert: function(message) {
-
-        function merge(chan, message) {
-            if (_.isEmpty(chan.log)) {
-              return _.extend(chan, { log: [message] })
-            } else {
-              return _.extend(chan, { log: _.flatten([ chan.log, message ])})
-            }
-
-        }
-
-        return methods.get(id)
+        return this.get(id)
         .then(function(chan) {
             return merge(chan, message)
         })
         .then(function(chan) {
             return insert(chan)
         })
-
       },
       get: function(id) {
         var deferred = Q.defer()
@@ -59,7 +55,6 @@ var channelModel = function(db, nano) {
         return deferred.promise
       }
     }
-    return methods
   }
 }
 
