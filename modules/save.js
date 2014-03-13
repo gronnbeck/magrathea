@@ -26,20 +26,41 @@ var channelModel = function(db, nano) {
       })
     }
 
-    return {
+    function latestId() {
+      var deferred = Q.defer()
+      channel.list({
+        descending: true,
+        limit: 1
+      }, function(err, body) {
+        deferred.resolve(_.first(body.rows))
+      })
+      return deferred.promise
+    }
+
+    var methods = {
       insert: function(message) {
         var deferred = Q.defer()
         insert(message, deferred)
         return deferred.promise
       },
       latest: function() {
+        return latestId()
+        .then(function(ref) {
+          return methods.get(ref.id)
+        })
+        .then(function(chan) {
+          return chan
+        })
+      },
+      get: function(id) {
         var deferred = Q.defer()
-        channel.list({descending: true}, function(err, body) {
-          console.log(err, body)
+        channel.get(id, function(err, body) {
+          deferred.resolve(body)
         })
         return deferred.promise
       }
     }
+    return methods
   }
 }
 

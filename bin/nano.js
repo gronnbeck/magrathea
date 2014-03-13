@@ -14,11 +14,10 @@ var doIt = function() {
      return db.channel('freenode', 'pokemen')
    })
    .then(function success(channel) {
-     channel.latest()
-     return channel.insert({ts: new Date(), from: 'me', payload: 'paaayload'})
+     return channel.latest()
    })
-   .then(function success(inserted) {
-     console.log('im done: ' + JSON.stringify(inserted))
+   .then(function (chan) {
+     console.log(chan)
    })
    .catch(function(error) {
      console.log('what?: ' + error)
