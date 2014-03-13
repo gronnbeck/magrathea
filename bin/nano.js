@@ -3,18 +3,21 @@
 var Save = require('../modules/save')
 , save = Save.init()
 , Q = require('q')
-, dbName = 'freenode_pokemen'
+, dbName = 'channel'
 
 var doIt = function() {
   save.getdb(dbName)
-  .then(function success(db) {
+   .then(function success(db) {
      return db
    })
    .then(function success(db) {
      return db.channel('freenode', 'pokemen')
    })
    .then(function success(channel) {
-     return channel.latest()
+     return channel.insert({from: 'me', ts: new Date(), payload: 'Hello'})
+       .then(function response (response) {
+         return channel.get(response.id)
+       })
    })
    .then(function (chan) {
      console.log(chan)
