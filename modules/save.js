@@ -2,22 +2,21 @@ var Nano = require('nano')
 , Q = require('q')
 , _ = require('underscore')
 
-var saveChannel = function(network, chan, obj) {
-  return {
-      network: network,
-      channel: chan,
-      from: obj.from,
-      ts: obj.ts,
-      log: obj.log
-  }
+function Channel(obj) {
+  this.network = obj.network
+  this.channel = obj.channel
+  this.from = obj.from
+  this.ts = obj.ts
+  this.log = obj.log
+  return this
 }
 
-function merge(chan, message) {
-    if (_.isEmpty(chan.log)) {
-      return _.extend(chan, { log: [message] })
-    } else {
-      return _.extend(chan, { log: _.flatten([ chan.log, message ])})
-    }
+Channel.prototype.merge = function(chan, message) {
+  if (_.isEmpty(chan.log)) {
+    return _.extend(chan, { log: [message] })
+  } else {
+    return _.extend(chan, { log: _.flatten([ chan.log, message ])})
+  }
 }
 
 var channelModel = function(db, nano) {
@@ -27,7 +26,8 @@ var channelModel = function(db, nano) {
 
     function insert(chanObj) {
       var deferred = Q.defer()
-      var update = _.extend(saveChannel(network, chan, chanObj), { _rev: chanObj._rev })
+      var obj = new Channel(chanObj)
+      var update = _.extend(obj, { _rev: chanObj._rev })
       channel.insert(update
       , id
       , function(err, body) {
@@ -41,7 +41,7 @@ var channelModel = function(db, nano) {
       insert: function(message) {
         return this.get(id)
         .then(function(chan) {
-            return merge(chan, message)
+            return Channel.prototype.merge(chan, message)
         })
         .then(function(chan) {
             return insert(chan)
