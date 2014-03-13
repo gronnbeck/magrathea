@@ -20,12 +20,13 @@ exports.init = function(conf) {
       })
       return deferred.promise
     },
-    getdb: function(name) {
+    channel: function() {
+      var db = 'channel'
       var deferred = Q.defer()
-      nano.db.get(name, function(error, body) {
+      nano.db.get(db, function(error, body) {
         if (error) deferred.reject(new Error(error))
         else deferred.resolve({
-          channel: api.channels(nano.db.use(name))
+          channel: api.channels(nano.db.use(db))
         })
       })
       return deferred.promise

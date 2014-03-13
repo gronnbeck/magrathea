@@ -6,7 +6,7 @@ var Save = require('../modules/db/save')
 , dbName = 'channel'
 
 var doIt = function() {
-  save.getdb(dbName)
+  save.channel()
    .then(function success(db) {
      return db
    })
