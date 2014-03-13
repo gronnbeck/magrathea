@@ -1,47 +1,7 @@
 var Nano = require('nano')
 , Q = require('q')
 , _ = require('underscore')
-, models = require('./models')
-, Channel = models.Channel
-
-var channelModel = function(db, nano) {
-  return function(network, chan) {
-    var id = network + "_" + chan
-    var channel = nano.db.use(db)
-
-    function insert(chanObj) {
-      var deferred = Q.defer()
-      var obj = new Channel(chanObj)
-      var update = _.extend(obj, { _rev: chanObj._rev })
-      channel.insert(update
-      , id
-      , function(err, body) {
-          if (err) deferred.reject(new Error(err))
-          else deferred.resolve(body)
-      })
-      return deferred.promise
-    }
-
-    return {
-      insert: function(message) {
-        return this.get(id)
-        .then(function(chan) {
-            return Channel.prototype.merge(chan, message)
-        })
-        .then(function(chan) {
-            return insert(chan)
-        })
-      },
-      get: function(id) {
-        var deferred = Q.defer()
-        channel.get(id, function(err, body) {
-          deferred.resolve(body)
-        })
-        return deferred.promise
-      }
-    }
-  }
-}
+, api = require('./api')
 
 exports.init = function(conf) {
   var defaults = { url: 'http://127.0.0.1:5984/' }
@@ -65,7 +25,7 @@ exports.init = function(conf) {
       nano.db.get(name, function(error, body) {
         if (error) deferred.reject(new Error(error))
         else deferred.resolve({
-          channel: channelModel(name, nano)
+          channel: api.channels(nano.db.use(name))
         })
       })
       return deferred.promise
