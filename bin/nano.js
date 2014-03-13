@@ -7,11 +7,8 @@ var Save = require('../modules/db/save')
 
 var doIt = function() {
   save.channel()
-   .then(function success(db) {
-     return db
-   })
-   .then(function success(db) {
-     return db.channel('freenode', 'pokemen')
+   .then(function success(channel) {
+     return channel('freenode', 'pokemen')
    })
    .then(function success(channel) {
      return channel.insert({from: 'me', ts: new Date(), payload: 'Hello'})
