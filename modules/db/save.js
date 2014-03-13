@@ -1,23 +1,8 @@
 var Nano = require('nano')
 , Q = require('q')
 , _ = require('underscore')
-
-function Channel(obj) {
-  this.network = obj.network
-  this.channel = obj.channel
-  this.from = obj.from
-  this.ts = obj.ts
-  this.log = obj.log
-  return this
-}
-
-Channel.prototype.merge = function(chan, message) {
-  if (_.isEmpty(chan.log)) {
-    return _.extend(chan, { log: [message] })
-  } else {
-    return _.extend(chan, { log: _.flatten([ chan.log, message ])})
-  }
-}
+, models = require('./models')
+, Channel = models.Channel
 
 var channelModel = function(db, nano) {
   return function(network, chan) {
