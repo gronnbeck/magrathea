@@ -1,7 +1,7 @@
 var Nano = require('nano')
 , Q = require('q')
 , _ = require('underscore')
-, api = require('./api')
+, api = require('./db/api')
 
 exports.init = function(conf) {
   var defaults = { url: 'http://127.0.0.1:5984/' }

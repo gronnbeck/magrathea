@@ -1,12 +1,12 @@
 #!/usr/local/bin/node
 
-var Save = require('../modules/db/save')
-, save = Save.init()
+var Db = require('../modules/db')
+, db = Db.init()
 , Q = require('q')
 , dbName = 'channel'
 
 var run = function() {
-  save.channel()
+  db.channel()
    .then(function success(channel) {
      return channel('freenode', 'pokemen')
    })
@@ -24,9 +24,4 @@ var run = function() {
    })
 }
 
-save.createdb(dbName)
-.then(function() {
-  run()
-}, function() {
-  run()
-})
+run()
