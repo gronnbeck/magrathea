@@ -19,7 +19,8 @@
 		"underscore": "1.5.2",
 		"express": "3.4.x",
 		"nano": "latest",
-		"Q": "latest"
+		"Q": "latest",
+		"coffee-script": "latest"
 	},
 	"devDependencies": {
 		"karma": "0.10.5",
