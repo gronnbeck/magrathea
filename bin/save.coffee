@@ -21,11 +21,13 @@ config = {
 
 
 server = new WebSocket.Server { port: config.server.port }
-
+Db = require '../modules/db'
+db = Db.init()
 server.on 'connection', (client) ->
   url = [config.proxy.url, config.proxy.port].join ':'
   queue = Queue.init()
   proxy = new WebSocket url
+  network = 'freenode'
 
   proxy.on 'open', (data) ->
     console.log 'Proxy found host server at ' + url
@@ -38,6 +40,16 @@ server.on 'connection', (client) ->
 
   proxy.on 'message', (data) ->
     console.log 'sending client data ' + data
+    message = JSON.parse data
+    if message.type == 'msg' and message.to.indexOf '#' > -1
+      db.channel()
+      .then (init) ->
+        return init(network, message.to.replace('#',''))
+      .then (channel) ->
+        return channel.insert(message)
+      .catch (error) ->
+        console.log(error)
+
     client.send data
 
   proxy.on 'close', () ->
