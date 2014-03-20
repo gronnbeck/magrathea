@@ -1,11 +1,19 @@
 #!/usr/local/bin/node
 
 var WebSocket = require('ws')
-, fs = require('fs');
+, fs = require('fs')
+, _ = require('underscore');
+
+var port = 8080;
+if (process.argv.length > 2) {
+	var cand = _.filter(process.argv,
+		function (str) { return str.indexOf('port') >= 0 })
+	if (!_.isEmpty(cand)) port = cand[0].split('=')[1]
+}
 
 var config = {
 	url: 'ws://localhost',
-	port: 8080
+	port: port
 };
 
 var establishConnection = function(ws) {
@@ -19,7 +27,9 @@ var establishConnection = function(ws) {
 	}));
 }
 
-var ws = new WebSocket(config.url + ':' + config.port);
+var url = config.url + ':' + config.port
+console.log('Establishing connection to ' + url)
+var ws = new WebSocket(url);
 
 ws.on('open', function() {
 	console.log('[ws] ws discovered');
