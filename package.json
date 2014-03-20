@@ -6,7 +6,6 @@
 	"author": "Ken Grønnbeck <kengroenn@gmail.com>",
 	"license": "MIT",
 	"scripts": {
-		"test": "jasmine-node-karma ."
 	},
 	"repository": {
 		"type": "git",
