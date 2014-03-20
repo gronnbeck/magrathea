@@ -5,17 +5,18 @@ var irc = require('irc')
 exports.init = function(config) {
 	var emitter = new events.EventEmitter()
 	, _client = new irc.Client(
-		config.server, 
-		config.nick, 
+		config.server,
+		config.nick,
 		{ channels: config.channels });
 
 	_client.addListener('message', function (from, to, msg) {
-		emitter.emit('msg', { 
-			type: 'msg', 
-			from: from, 
-			to: to, 
+		emitter.emit('msg', {
+			type: 'msg',
+			from: from,
+			to: to,
 			payload: msg,
-			server: config.server
+			server: config.server,
+			ts: new Date()
 		});
 	});
 
@@ -27,7 +28,7 @@ exports.init = function(config) {
 		if (message.type == 'msg') {
 			_client.say(message.to, message.payload)
 		} else if (message.type == 'raw') {
-			_client.send(message.cmd);	
+			_client.send(message.cmd);
 		} else {
 			console.log('InvalidMessageType: ' + message);
 		}
@@ -35,4 +36,3 @@ exports.init = function(config) {
 
 	return emitter;
 };
-
