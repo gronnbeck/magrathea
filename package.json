@@ -19,18 +19,14 @@
 		"underscore": "1.5.2",
 		"express": "3.4.x",
 		"nano": "latest",
-		"Q": "latest",
+		"q": "2.0.0",
 		"coffee-script": "latest"
 	},
 	"devDependencies": {
-		"karma": "0.10.5",
-		"karma-jasmine": "0.1.3",
-		"jasmine-node-karma": "1.6.1",
-		"jshint": "latest",
 		"supervisor": "latest"
 	},
 	"engines": {
 		"node": "0.10.x",
-		"npm": "1.2.x"
+		"npm": "1.4.x"
 	}
 }
