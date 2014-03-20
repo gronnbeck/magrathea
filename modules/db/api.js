@@ -29,6 +29,13 @@ exports.channels = function(channel) {
         .then(function(chan) {
             return insert(chan)
         })
+        .catch(function() {
+          return insert({
+            network: network,
+            channel: chan,
+            log: [message]
+          })
+        })
       },
       get: function(id) {
         var deferred = Q.defer()
