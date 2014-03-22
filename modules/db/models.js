@@ -3,8 +3,6 @@ var _ = require('underscore')
 function Channel(obj) {
   this.network = obj.network
   this.channel = obj.channel
-  this.from = obj.from
-  this.ts = obj.ts
   this.log = obj.log
   return this
 }
