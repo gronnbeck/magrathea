@@ -1,5 +1,5 @@
 WebSocket = require 'ws'
-
+Queue = require './queue'
 Db = require '../db'
 _ = require 'underscore'
 
