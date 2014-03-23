@@ -19,7 +19,8 @@
 		"express": "3.4.x",
 		"nano": "latest",
 		"q": "2.0.0",
-		"coffee-script": "latest"
+		"coffee-script": "latest",
+		"express": "3.x"
 	},
 	"devDependencies": {
 		"supervisor": "latest"
