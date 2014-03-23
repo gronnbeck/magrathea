@@ -1,17 +1,14 @@
 var express = require('express')
-, db = require('../modules/db.js').init()
 , app = express()
+, logapi = require('../modules/logapi')
 
 app.get('/:network/:channel', function (req, res) {
   var network = req.params.network
   , channel = req.params.channel
+  , chanapi = logapi.channel(network, channel)
 
-  db.channel()
-  .then(function(init) {
-    return init(network, channel)
-  }).then(function(api) {
-    return api.get()
-  }).then(function(chan) {
+  chanapi.get()
+  .then(function(chan) {
     res.send(chan)
   })
 
