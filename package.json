@@ -20,7 +20,8 @@
 		"nano": "latest",
 		"q": "2.0.0",
 		"coffee-script": "latest",
-		"express": "3.x"
+		"express": "3.x",
+		"request": "latest"
 	},
 	"devDependencies": {
 		"supervisor": "latest"

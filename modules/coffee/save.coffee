@@ -1,15 +1,18 @@
 proxy = require './ws2ws-proxy'
+request = require 'request'
 
 fromClient = (data) ->
   message = JSON.parse data
   if message.type == 'msg' and message.to.indexOf '#' > -1
-    db.channel()
-    .then (init) ->
-      return init(network, message.to.replace('#',''))
-    .then (channel) ->
-      return channel.insert(message)
-    .catch (error) ->
-      console.log(error)
+    options =
+      uri: 'http://localhost:3000/channel'
+      method: 'post'
+      json: message
+
+    request options, (error, res, body) ->
+      if error
+        console.log error
+
 
 exports.start = start = () ->
   handlers =
