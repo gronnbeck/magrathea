@@ -37,7 +37,7 @@ exports.channels = function(channel) {
           })
         })
       },
-      get: function(id) {
+      get: function() {
         var deferred = Q.defer()
         channel.get(id, function(err, body) {
           deferred.resolve(body)
