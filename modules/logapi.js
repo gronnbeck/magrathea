@@ -11,8 +11,6 @@ exports.channel = function(network, channel) {
       })
     },
     insert: function (message) {
-      console.log(message)
-      console.log(network)
       return db.channel()
       .then(function(init) {
         return init(network, message.to.replace('#',''))
