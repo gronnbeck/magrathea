@@ -8,11 +8,14 @@ var defaults = {
 };
 
 exports.start = function(configure) {
+
 	var config = _.defaults(configure || {}, defaults)
 	, wss = new webSocket.Server({ port: config.port })
 	, connections = container.Connection();
 
-	console.log('Starting proxy');
+	console.log('Starting IRC proxy with the following config:');
+	console.log(JSON.stringify(configure, null, 4))
+
 	wss.on('connection', function (ws) {
 		var cmds = Commands.init(ws, connections);
 
@@ -20,7 +23,7 @@ exports.start = function(configure) {
 		ws.on('message', function (msg) {
 			var message = JSON.parse(msg);
 
-			if (_.has(cmds, message.type)) 
+			if (_.has(cmds, message.type))
 				cmds[message.type](message);
 			else {
 				ws.send(JSON.stringify({
@@ -30,9 +33,5 @@ exports.start = function(configure) {
 				}));
 			}
 		});
-	});	
+	});
 };
-
-
-
-
