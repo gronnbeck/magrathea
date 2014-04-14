@@ -14,7 +14,7 @@ exports.start = function(configure) {
 	, connections = container.Connection();
 
 	console.log('Starting IRC proxy with the following config:');
-	console.log(JSON.stringify(configure, null, 4))
+	console.log(JSON.stringify(config, null, 4))
 
 	wss.on('connection', function (ws) {
 		var cmds = Commands.init(ws, connections);
