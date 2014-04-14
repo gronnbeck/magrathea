@@ -1,20 +1,15 @@
 #!/usr/local/bin/node
 
 var WebSocket = require('ws')
-, fs = require('fs')
-, _ = require('underscore');
-
-var port = 8080;
-if (process.argv.length > 2) {
-	var cand = _.filter(process.argv,
-		function (str) { return str.indexOf('port') >= 0 })
-	if (!_.isEmpty(cand)) port = cand[0].split('=')[1]
-}
-
-var config = {
-	url: 'ws://localhost',
-	port: port
-};
+	, fs = require('fs')
+	, _ = require('underscore')
+	, argv = process.argv
+	, parseConfig = require('../modules/parse-config')
+  , defaults = {
+		url: 'ws://localhost',
+		port: 8080
+	}
+ , config = _.defaults(parseConfig.parse(argv), defaults)
 
 var establishConnection = function(ws) {
 	ws.send( JSON.stringify({
@@ -26,6 +21,9 @@ var establishConnection = function(ws) {
 		}
 	}));
 }
+
+console.log('Starting magrathea bot with config: ')
+console.log(JSON.stringify(config, null, 4))
 
 var url = config.url + ':' + config.port
 console.log('Establishing connection to ' + url)
