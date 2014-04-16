@@ -28,11 +28,15 @@ exports.init = function(config) {
 		if (message.type == 'msg') {
 			_client.say(message.to, message.payload)
 		} else if (message.type == 'raw') {
-			_client.send(message.cmd);
+			_client.send.apply(_client, message.cmd);
 		} else {
 			console.log('InvalidMessageType: ' + message);
 		}
 	});
+
+	_client.addListener('raw', function(raw, raw2) {
+		emitter.emit('raw', raw)
+	})
 
 	return emitter;
 };
