@@ -1,0 +1,8 @@
+app:
+  exec: node bin/proxy.js
+
+setup:
+  - npm install
+
+teardown:
+  - echo "Not sure when this is echoed. What is teardown"
