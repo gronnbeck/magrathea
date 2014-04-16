@@ -1,4 +1,4 @@
-var proxy = require('../modules/proxy/proxy.js')
+var proxy = require('../modules/proxy.js')
  , _ = require('underscore')
  , parseConfig = require('../modules/parse-config.js')
  , argv = process.argv
