@@ -16,12 +16,7 @@
 		"ws": "0.4.31",
 		"node-uuid": "latest",
 		"underscore": "1.5.2",
-		"express": "3.4.x",
-		"nano": "latest",
-		"q": "2.0.0",
-		"coffee-script": "latest",
-		"express": "3.x",
-		"request": "latest"
+		"q": "2.0.0"
 	},
 	"devDependencies": {
 		"supervisor": "latest"
