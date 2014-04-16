@@ -19,8 +19,9 @@ exports.start = function(configure) {
 	wss.on('connection', function (ws) {
 		var cmds = Commands.init(ws, connections);
 
-		console.log("Connection received from " + ws);
+		console.log("WS Connection opened");
 		ws.on('message', function (msg) {
+			console.log('Received message: ' + msg)
 			var message = JSON.parse(msg);
 
 			if (_.has(cmds, message.type))

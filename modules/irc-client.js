@@ -30,7 +30,10 @@ exports.init = function(config) {
 		} else if (message.type == 'raw') {
 			_client.send.apply(_client, message.cmd);
 		} else {
-			console.log('InvalidMessageType: ' + message);
+			emitter.emit('msg', JSON.stringify({
+					type: 'error',
+					payload: 'InvalidMessageType: ' + message
+			}));
 		}
 	});
 
