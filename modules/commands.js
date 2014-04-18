@@ -8,7 +8,13 @@ exports.init = function(ws, connections) {
 		console.log('  Raw: ' + raw )
 
 		var client = connection.client
-		ws.send( JSON.stringify({ type: 'connected', key: connection.key }) )
+		ws.send( JSON.stringify({
+			type: 'connected',
+			key: connection.key,
+			server: connection.server,
+			nick: connection.nick,
+			channels: connection.channels
+		}))
 
 		var msg = function(msg) {
 			ws.send(JSON.stringify(_.defaults(msg, { key: connection.key })))
