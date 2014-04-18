@@ -3,6 +3,9 @@ var irc = require('irc')
 , events = require('events');
 
 exports.init = function(config) {
+	console.log('IRC client started with config:')
+	console.log(JSON.stringify(config, null, 4))
+
 	var emitter = new events.EventEmitter()
 	, _client = new irc.Client(
 		config.server,
