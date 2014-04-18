@@ -73,6 +73,7 @@ exports.init = function(ws, connections) {
 				ws.send(JSON.stringify({
 					success: false,
 					type: 'disconnected',
+					key: key,
 					msg: 'The connection you are referencing does not exists'
 				}));
 			}
