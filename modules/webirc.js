@@ -11,8 +11,9 @@ var defaults = {
 function EventEmitterWrap (middleware) {
   var emitter = new events.EventEmitter();
   emitter.on('send', function(data) {
-    middleware(data)
+    middleware.out(data)
   })
+
   return {
     on: emitter.on,
     send: function(msg) {
@@ -45,10 +46,16 @@ function MiddlewareHandler(middlewares, end) {
 }
 
 module.exports = function() {
-  var middlewares = [];
 
-  var use = function(middleware) {
-    middlewares = _.flatten([middleware, middlewares])
+
+  var outs = [];
+  var useOut = function(middleware) {
+    outs = _.flatten([outs, middleware])
+  }
+
+  var ins = [];
+  var useIn = function(middleware) {
+    ins = _.flatten([ins, middleware])
   }
 
   var start = function(configure) {
@@ -62,17 +69,16 @@ module.exports = function() {
 
     wss.on('connection', function (ws) {
 
-      var middleHandler = MiddlewareHandler(middlewares, function(req,res) {
+      var outHandler = MiddlewareHandler(outs, function(req,res) {
         ws.send(res);
       })
 
-      var emitter = EventEmitterWrap(middleHandler);
+      var emitter = EventEmitterWrap({ out: outHandler });
       var cmds = Commands.init(emitter, connections);
 
-      emitter.on('message', function(msg) {
-        console.log('Received message: ' + msg)
-        var message = JSON.parse(msg);
-
+      var inHandler = MiddlewareHandler(ins, function(req, res) {
+        console.log('Received message: ' + req)
+        var message = JSON.parse(req);
         if (_.has(cmds, message.type))
           cmds[message.type](message);
         else {
@@ -84,6 +90,11 @@ module.exports = function() {
         }
       })
 
+
+      emitter.on('message', function(msg) {
+        inHandler(msg)
+      })
+
       console.log("WS Connection opened");
       ws.on('message', function (msg) {
         emitter.emit('message', msg)
@@ -92,7 +103,8 @@ module.exports = function() {
   };
 
   return {
-    use: use,
+    useIn: useIn,
+    useOut: useOut,
     start: start
   }
 }
