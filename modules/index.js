@@ -2,7 +2,9 @@ var _ = require('underscore')
 , WebSocket = require('ws')
 , container = require('./container')
 , Commands = require('./commands')
-, events = require('events');
+, MiddlewareHandler = require('./middlewarehandler')
+, events = require('events')
+
 
 var defaults = {
   port: 8080
@@ -23,26 +25,6 @@ var EventEmitterWrap = (middleware) => {
   }
 };
 
-var MiddlewareHandler = (middlewares, end) => {
-  var index = 0;
-  return function(data) {
-    var req = data, res = data;
-
-    var next = function() {
-      if (middlewares.length == index) {
-        end(req,res);
-        index = 0;
-      }
-      else {
-        var middleware = middlewares[index];
-        index = index + 1;
-        middleware(req, res, next);
-      }
-    };
-
-    next();
-  };
-}
 
 module.exports = () => {
 
@@ -56,7 +38,7 @@ module.exports = () => {
     ins = _.flatten([ins, middleware])
   }
 
-  var start = (configure) => {
+  var listen = (configure) => {
 
     var config = _.defaults(configure || {}, defaults)
     , wss = new WebSocket.Server({ port: config.port })
@@ -103,6 +85,6 @@ module.exports = () => {
   return {
     useIn: useIn,
     useOut: useOut,
-    start: start
+    listen: listen
   }
 }

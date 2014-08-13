@@ -18,4 +18,4 @@ proxy.useIn(function(res,req,next) {
   next();
 })
 
-proxy.start(config)
+proxy.listen(config)
