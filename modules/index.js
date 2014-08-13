@@ -1,6 +1,6 @@
 var _ = require('underscore')
 , WebSocket = require('ws')
-, container = require('./container')
+, defaultContainer = require('./container')
 , Commands = require('./commands')
 , MiddlewareHandler = require('./middlewarehandler')
 , events = require('events')
@@ -38,11 +38,16 @@ module.exports = () => {
     ins = _.flatten([ins, middleware])
   }
 
+  var container = undefined
+  var useContainer = (c) => {
+    container = c
+  }
+
   var listen = (configure) => {
 
     var config = _.defaults(configure || {}, defaults)
     , wss = new WebSocket.Server({ port: config.port })
-    , connections = container.Connection();
+    , connections = container || defaultContainer.Connection();
 
     console.log('Starting IRC proxy with the following config:');
     console.log(JSON.stringify(config, null, 4))
@@ -85,6 +90,7 @@ module.exports = () => {
   return {
     useIn: useIn,
     useOut: useOut,
+    useContainer: useContainer,
     listen: listen
   }
 }
