@@ -15,6 +15,7 @@
     "mori": "^0.2.9",
     "node-uuid": "latest",
     "q": "2.0.0",
+    "traceur": "0.0.58",
     "underscore": "1.5.2",
     "ws": "0.4.31"
   },

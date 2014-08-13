@@ -5,6 +5,8 @@ var webirc = require('../modules/webirc')
 
 var config = parseConfig.parse(argv)
 
+console.log(proxy)
+
 var proxy = webirc();
 proxy.useOut(function(res,req,next) {
   console.log('Middleware!: ' + res, req);
