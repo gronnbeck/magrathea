@@ -1,6 +1,6 @@
 {
   "name": "magrathea",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Simple irc-proxy for the web",
   "main": "index.js",
   "author": "Ken Grønnbeck <kengroenn@gmail.com>",
