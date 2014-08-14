@@ -1,7 +1,6 @@
 var traceur = require('traceur');
 traceur.require.makeDefault(function(filename) {
-  // don't transpile our dependencies, just our app
-  return filename.indexOf('node_modules') === -1;
+  return filename.indexOf('node_modules/magrathea/lib/') !== -1;
 });
 
 module.exports = require('./lib/magrathea')
