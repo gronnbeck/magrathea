@@ -1,19 +1,19 @@
 {
-  "name": "webirc",
-  "version": "0.0.0",
-  "description": "Simple web-based irc-client",
-  "main": "app.js",
+  "name": "magrathea",
+  "version": "0.0.1",
+  "description": "Simple irc-proxy for the web",
+  "main": "index.js",
   "author": "Ken Grønnbeck <kengroenn@gmail.com>",
   "license": "MIT",
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/gronnbeck/webirc"
+    "url": "git://github.com/gronnbeck/magrathea"
   },
   "dependencies": {
     "irc": "0.3.6",
     "mori": "^0.2.9",
-    "node-uuid": "latest",
+    "node-uuid": "1.4.1",
     "q": "2.0.0",
     "traceur": "0.0.58",
     "underscore": "1.5.2",
